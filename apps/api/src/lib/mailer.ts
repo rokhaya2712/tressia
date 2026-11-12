@@ -14,6 +14,10 @@ export async function sendMail(mail: Mail): Promise<void> {
     sentMails.push(mail)
     return
   }
+  if (!env.mailEnabled) {
+    console.log(`[mailer] (SMTP non configure) ${mail.to} : ${mail.subject}`)
+    return
+  }
   await transport.sendMail({ from: env.mailFrom, ...mail })
 }
 

@@ -40,6 +40,16 @@ Mot de passe commun : `tressia123`
 
 Dans le code et la base, un profil de tresseuse s'appelle encore `salon` (table `salons`, routes `/api/salons`) et les personnes qui tressent `staff`.
 
+## Mise en ligne
+
+Le site et l'API tournent dans **un seul service** : en production, l'API sert aussi le build du site (`apps/web/dist`).
+
+- **Base** : PostgreSQL gratuit sur [Neon](https://neon.com) (extension `btree_gist` créée par les migrations).
+- **Service** : [Render](https://render.com), offre gratuite, décrit dans `render.yaml` (région Francfort).
+- Au démarrage : migrations, puis données de démo **seulement si la base est vide**, puis lancement du serveur.
+- Variables : `DATABASE_URL` (chaîne Neon), `WEB_ORIGIN` (URL publique du site), `NODE_ENV=production`. Sans `SMTP_HOST`, les e-mails sont seulement écrits dans les journaux.
+- Limites de l'offre gratuite : le service se met en veille après 15 min sans visite (premier chargement d'environ une minute) ; les photos envoyées par les tresseuses ne survivent pas à un redémarrage (disque éphémère), les photos de démo sont recopiées à chaque démarrage.
+
 ## Structure
 
 ```

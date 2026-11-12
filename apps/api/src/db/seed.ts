@@ -1,16 +1,11 @@
-import { copyFileSync, mkdirSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
 import { CATEGORIES, zonedTimeToUtc } from '@tressia/shared'
 import { db, sqlClient } from './client.ts'
 import { bookingItems, bookings, categories, closures, openingHours, reviews, salonPhotos, salons, services, staff, users } from './schema.ts'
 import { hashPassword } from '../lib/auth.ts'
 import { localDateOf, weekdayOf } from '../modules/availability/service.ts'
+import { copySeedAssets } from '../lib/seedAssets.ts'
 
 const DAY = 86_400_000
-const ASSETS = fileURLToPath(new URL('../../seed-assets/', import.meta.url))
-const UPLOADS = fileURLToPath(new URL('../../uploads/seed/', import.meta.url))
-const IMAGES = ['hair8.jpg', 'hairGallery.jpeg', 'contact.jpg']
-const PHOTOS = ['braiding-01.jpg', 'braiding-02.jpg', 'braiding-03.jpg', 'braiding-05.jpg', 'braiding-child.jpg', 'hair-braiding.jpg', 'coiffeuses.jpg', 'barber-01.jpg', 'barber-03.jpg', 'barber-07.jpg', 'barber-08.jpg']
 // Photos reelles (Wikimedia Commons, voir seed-assets/photos/CREDITS.md)
 const COVERS: Record<string, string> = {
   'awa-diallo': 'braiding-01.jpg', 'fatou-ndiaye': 'braiding-02.jpg', 'mame-diarra': 'hair-braiding.jpg',
@@ -27,9 +22,7 @@ const CAT_IMAGE: Record<string, string> = {
 }
 const img = (f: string) => `/uploads/seed/${f}`
 
-mkdirSync(UPLOADS, { recursive: true })
-for (const f of IMAGES) copyFileSync(ASSETS + f, UPLOADS + f)
-for (const f of PHOTOS) copyFileSync(ASSETS + 'photos/' + f, UPLOADS + f)
+copySeedAssets()
 
 await sqlClient.unsafe(`TRUNCATE "reviews", "booking_items", "bookings", "staff_time_off", "staff", "services", "salon_photos", "closures", "opening_hours", "salons", "sessions", "users", "categories" RESTART IDENTITY CASCADE`)
 
