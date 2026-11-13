@@ -10,7 +10,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx --env-file=../../.env src/db/migrate.ts",
     "db:seed": "tsx --env-file=../../.env src/db/seed.ts",
-    "start:prod": "tsx src/db/migrate.ts && tsx src/db/seed-if-empty.ts && tsx src/server.ts"
+    "start:prod": "tsx src/db/migrate.ts && tsx src/db/seed-if-empty.ts && tsx src/db/secure-admin.ts && tsx src/server.ts"
   },
   "dependencies": {
     "@tressia/shared": "*",

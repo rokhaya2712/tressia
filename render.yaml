@@ -19,3 +19,5 @@ services:
         sync: false # chaine de connexion Neon, avec ?sslmode=require
       - key: WEB_ORIGIN
         sync: false # URL publique du service, ex. https://tressia.onrender.com
+      - key: ADMIN_PASSWORD
+        sync: false # mot de passe du compte admin@tressia.test en ligne (10 caracteres min.)
